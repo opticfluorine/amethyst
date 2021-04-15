@@ -16,10 +16,17 @@ RUN apt-get update \
      g++-10 \
      cmake \
      ninja-build \
+     python3 \
+     python3-pip \
   && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 \
-  && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+  && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10 \
+  && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
+  && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
 
 # Emscripten
 COPY --from=emscripten/emsdk:2.0.16 /emsdk /emsdk
 RUN /emsdk/emsdk activate 2.0.16
 ENV PATH="/emsdk:/emsdk/node/14.15.5_64bit/bin:/emsdk/upstream/emscripten:${PATH}"
+
+# Conan
+RUN pip3 install conan
