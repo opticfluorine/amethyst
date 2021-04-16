@@ -18,6 +18,7 @@ RUN apt-get update \
      ninja-build \
      python3 \
      python3-pip \
+     gdb \
   && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 \
   && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10 \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
