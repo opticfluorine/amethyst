@@ -1,0 +1,6 @@
+set(CMAKE_SYSTEM_NAME Emscripten)
+set(CMAKE_SYSTEM_PROCESSOR wasm)
+
+set(EMSCRIPTEN_ROOT /emsdk/upstream/emscripten)
+set(CMAKE_C_COMPILER ${EMSCRIPTEN_ROOT}/emcc)
+set(CMAKE_CXX_COMPILER ${EMSCRIPTEN_ROOT}/em++)

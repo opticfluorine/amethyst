@@ -1,0 +1,20 @@
+name: CI with SDK Container
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the SDK container
+      run: ci/00-setup.sh $GITHUB_SHA
+    - name: Run the build
+      run: ci/01-compile.sh $GITHUB_SHA $GITHUB_WORKSPACE
