@@ -1,5 +1,2 @@
-# Common projects
-add_subdirectory (AmethystCommon)
-
-# Server projects
-add_subdirectory (AmethystServer)
+add_subdirectory (Common)
+add_subdirectory (Server)
