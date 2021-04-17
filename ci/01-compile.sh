@@ -28,6 +28,6 @@ WORKSPACE_DIR=$2
 
 docker run \
     --rm \
-    --mount $WORKSPACE_DIR:/amethyst:rw \
+    -v $WORKSPACE_DIR:/amethyst:rw \
     amethyst-sdk:$GIT_SHA  \
     /amethyst/ci/build.sh --repo $WORKSPACE_DIR
