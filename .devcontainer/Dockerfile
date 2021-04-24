@@ -31,3 +31,4 @@ ENV PATH="/emsdk:/emsdk/node/14.15.5_64bit/bin:/emsdk/upstream/emscripten:${PATH
 
 # Conan
 RUN pip3 install conan
+ADD --chown=vscode:vscode .conan/ /home/vscode/.conan/
