@@ -56,5 +56,6 @@ done
 # Build.
 mkdir -p $REPO/build/
 cd $REPO/build/
+conan install ..
 cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -GNinja ..
 ninja

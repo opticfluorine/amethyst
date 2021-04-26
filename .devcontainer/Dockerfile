@@ -31,3 +31,10 @@ ENV PATH="/emsdk:/emsdk/node/14.15.5_64bit/bin:/emsdk/upstream/emscripten:${PATH
 
 # Conan
 RUN pip3 install conan
+ADD --chown=vscode:vscode .conan/ /home/vscode/.conan/
+
+# Dependencies not available via Conan
+RUN apt-get -y install --no-install-recommends \
+  libsdl2-dev \
+  libsdl2-image-dev \
+  libsdl2-mixer-dev
