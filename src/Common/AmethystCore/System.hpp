@@ -47,6 +47,12 @@ namespace Core
  * generated once at compile time. The resulting jump table leads to a trampoline
  * which unpacks the event payload (if any) and calls the corresponding OnEvent()
  * method of the derived type.
+ * 
+ * All derived types must include the SYSTEM_DEFAULT_ONEVENT in public scope
+ * to define the template callback method. The default implementation provides
+ * runtime assertions against processing any events of interest for which an
+ * OnEvent specialization has not been implemented. The derived type must implement
+ * an OnEvent specialization for each event of interest.
  */
 template<typename Self, EventId... Ids>
 class System
@@ -71,20 +77,6 @@ public:
         JumpToSpecificEvent(ev, Sequence{});
     }
 
-    template<EventId Id>
-    void OnEvent()
-    {
-        // Should never hit a default implementation - log error and trip an assertion.
-        assert(false);
-    }
-
-    template<EventId Id>
-    void OnEvent(const EventInfo<Id>::PayloadType*)
-    {
-        // Default implementation falls through to the error case.
-        OnEvent<Id>();
-    }
-
 private:
     static constexpr size_t minId = std::min(static_cast<size_t>(Ids)...); //!< Minimum event ID of interest.
     static constexpr size_t maxId = std::max(static_cast<size_t>(Ids)...); //!< Maximum event ID of interest.
@@ -97,13 +89,14 @@ private:
     inline void JumpToSpecificEvent(const Event &ev, std::index_sequence<Indices...>)
     {
         // Generate jump table.
-        static constexpr auto jmpTable[] = {
+        using Fn = void (decltype(this)::*)(const Event&);
+        static constexpr Fn jmpTable[] = {
             &DispatchSpecificEvent<minId + Indices>...
         };
 
         // Invoke specific dispatcher.
         auto index = static_cast<size_t>(ev.eventId) - minId;
-        std::invoke(jmpTable[index], ev);
+        std::invoke(jmpTable[index], this, ev);
     }
 
     /**@brief Inner dispatcher that unpacks an event and calls the final callback.
@@ -117,7 +110,7 @@ private:
         
         // Dispatch according to payload type, if any.
         using Info = EventInfo<InnerId>;
-        if constexpr (std::is_void<Info::PayloadType>::value)
+        if constexpr (std::is_void<typename Info::PayloadType>::value)
         {
             static_cast<Self*>(this)->OnEvent<InnerId>();
         }
@@ -129,6 +122,19 @@ private:
     }
     
 };
+
+/**@brief Defines default event handlers with error logging. */
+#define SYSTEM_DEFAULT_ONEVENT \
+    template<EventId Id> \
+    void OnEvent() \
+    { \
+        assert(false); \
+    } \
+    template<EventId Id> \
+    void OnEvent(const typename EventInfo<Id>::PayloadType*) \
+    { \
+        OnEvent<Id>(); \
+    } \
 
 }
 }
