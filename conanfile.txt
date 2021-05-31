@@ -1,4 +1,6 @@
 [requires]
+boost/1.76.0
+di/1.2.0
 entt/3.7.0
 
 [generators]

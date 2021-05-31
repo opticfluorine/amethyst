@@ -1,1 +1,1 @@
-add_subdirectory(AmethystCommon)
+add_subdirectory(AmethystCore)
