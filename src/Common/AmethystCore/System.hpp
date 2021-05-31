@@ -67,7 +67,7 @@ public:
         // cache performance). The resulting jump table may be sparse but is
         // guaranteed to have defined behavior between the minimum and maximum
         // event IDs; landing on a default handler will produce a runtime error.
-        using Sequence = std::make_index_sequence<maxId>;
+        using Sequence = std::make_index_sequence<maxId-minId>;
         JumpToSpecificEvent(ev, Sequence{});
     }
 
