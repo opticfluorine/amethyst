@@ -89,9 +89,10 @@ private:
     inline void JumpToSpecificEvent(const Event &ev, std::index_sequence<Indices...>)
     {
         // Generate jump table.
-        using Fn = void (decltype(this)::*)(const Event&);
+        using OwnType = std::remove_pointer_t<decltype(this)>;
+        using Fn = void (OwnType::*)(const Event&);
         static constexpr Fn jmpTable[] = {
-            &DispatchSpecificEvent<minId + Indices>...
+            &OwnType::template DispatchSpecificEvent<static_cast<EventId>(minId + Indices)>...
         };
 
         // Invoke specific dispatcher.
@@ -112,12 +113,12 @@ private:
         using Info = EventInfo<InnerId>;
         if constexpr (std::is_void<typename Info::PayloadType>::value)
         {
-            static_cast<Self*>(this)->OnEvent<InnerId>();
+            static_cast<Self*>(this)->template OnEvent<InnerId>();
         }
         else
         {
             const auto* payload = static_cast<const Info::PayloadType*>(ev.data);
-            static_cast<Self*>(this)->OnEvent<InnerId>(payload);
+            static_cast<Self*>(this)->template OnEvent<InnerId>(payload);
         }
     }
     

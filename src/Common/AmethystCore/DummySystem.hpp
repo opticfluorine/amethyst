@@ -18,13 +18,14 @@
 #ifndef __AMETHYSTCORE_DUMMYSYSTEM_HPP__
 #define __AMETHYSTCORE_DUMMYSYSTEM_HPP__
 
+#include "CoreEvents.hpp"
 #include "System.hpp"
 
 namespace Amethyst {
 namespace Core {
 
     class DummySystem;
-    using _DummySystem_Base = System<DummySystem, EventId::CORE_SHUTDOWN>;
+    using _DummySystem_Base = System<DummySystem, EventId::CORE_SHUTDOWN, EventId::OTHER>;
 
     /**@brief Example system for initial testing.
      */

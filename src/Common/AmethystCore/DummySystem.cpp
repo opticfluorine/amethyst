@@ -19,6 +19,13 @@
 
 using namespace Amethyst::Core;
 
-DummySystem::DummySystem() { }
+DummySystem::DummySystem() 
+{ 
+    // Inject a dummy event.
+    Event ev {
+        .eventId = EventId::CORE_SHUTDOWN
+    };
+    DispatchEvent(ev);
+}
 
 DummySystem::~DummySystem() { }
