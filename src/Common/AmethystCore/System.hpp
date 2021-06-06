@@ -78,8 +78,8 @@ public:
     }
 
 private:
-    static constexpr size_t minId = std::min(static_cast<size_t>(Ids)...); //!< Minimum event ID of interest.
-    static constexpr size_t maxId = std::max(static_cast<size_t>(Ids)...); //!< Maximum event ID of interest.
+    static constexpr size_t minId = std::min({static_cast<size_t>(Ids)...}); //!< Minimum event ID of interest.
+    static constexpr size_t maxId = std::max({static_cast<size_t>(Ids)...}); //!< Maximum event ID of interest.
 
     /**@brief Uses a generated jump table to call the correct specific dispatcher.
      * @tparam Indices Indices of the jump table starting at zero.

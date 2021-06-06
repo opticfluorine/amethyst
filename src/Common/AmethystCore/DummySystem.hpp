@@ -25,7 +25,7 @@ namespace Amethyst {
 namespace Core {
 
     class DummySystem;
-    using _DummySystem_Base = System<DummySystem, EventId::CORE_SHUTDOWN, EventId::OTHER>;
+    using _DummySystem_Base = System<DummySystem, EventId::CORE_SHUTDOWN>;
 
     /**@brief Example system for initial testing.
      */

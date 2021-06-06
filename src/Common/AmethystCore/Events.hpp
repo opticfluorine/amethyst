@@ -28,7 +28,6 @@ namespace Core {
     enum struct EventId
     {
         CORE_SHUTDOWN, //!< Engine shutdown event.
-        OTHER,
     };
 
     /**@brief Maximum event size, in bytes.
