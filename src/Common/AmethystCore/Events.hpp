@@ -27,7 +27,11 @@ namespace Core {
      */
     enum struct EventId
     {
+        // === Core Events ===
         CORE_SHUTDOWN, //!< Engine shutdown event.
+
+        // === Internal Bookkeeping ===
+        _MAX_EVENT     //!< Maximum event ID value. Not an actual event.
     };
 
     /**@brief Maximum event size, in bytes.
@@ -35,7 +39,7 @@ namespace Core {
      * events fit cleanly into memory pages (no fragmentation within
      * a memory pool of events).
      */
-    constexpr size_t MAX_EVENT_SIZE = 128 - sizeof(EventId);
+    constexpr size_t MAX_EVENT_SIZE = 128 - sizeof(EventId) - sizeof(size_t);
 
     /**@brief General purpose event data structure.
      * The general event structure encodes the payload struct as a byte
@@ -44,6 +48,7 @@ namespace Core {
     struct Event
     {
         EventId eventId; //!< Event ID.
+        size_t refCount; //!< Reference count controlled from the event loop.
         char data[MAX_EVENT_SIZE]; //!< Data payload byte array.
     };
 

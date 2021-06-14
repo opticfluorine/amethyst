@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
+#include <memory>
 #include <type_traits>
 #include <utility>
 
@@ -31,6 +32,8 @@ namespace Amethyst
 namespace Core
 {
 
+class EventLoop;
+
 /**@brief Base class for systems. 
  * @tparam Self Derived type.
  * @tparam Ids Event IDs this system reacts to.
@@ -40,6 +43,9 @@ namespace Core
  * away as much as possible, allowing a system to be implemented simply by deriving
  * from the appropriate instantiation of the base class and implemented the correct
  * OnEvent() methods.
+ * 
+ * The lifetime of a system must be greater than or equal to the lifetime of the
+ * Event Loop to which it is connected.
  * 
  * The majority of the event processing boilerplate is implemented in the
  * base template. Events are delivered from the event loop via the DispatchEvent()
@@ -75,6 +81,13 @@ public:
         // event IDs; landing on a default handler will produce a runtime error.
         using Sequence = std::make_index_sequence<maxId-minId>;
         JumpToSpecificEvent(ev, Sequence{});
+    }
+
+protected:
+
+    System(EventLoop &eventLoop)
+    {
+
     }
 
 private:
