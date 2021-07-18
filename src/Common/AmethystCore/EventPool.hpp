@@ -15,22 +15,34 @@
  * limitations under the License.
  */
 
-#ifndef __AMETHYSTCORE_EVENTLOOP_HPP__
-#define __AMETHYSTCORE_EVENTLOOP_HPP__
+#ifndef __AMETHYSTCORE_EVENTPOOL_HPP__
+#define __AMETHYSTCORE_EVENTPOOL_HPP__
 
-namespace Amethyst
-{
-namespace Core
-{
+#include <boost/pool/object_pool.hpp>
 
-    /**@brief Event loop that connects all Systems together with pub/sub message queues.
+#include "Events.hpp"
+
+namespace Amethyst {
+namespace Core {
+
+    /**@brief Provides a memory pool for reusable events.
      */
-    class EventLoop final
+    class EventPool final
     {
     public:
+        EventPool();
+        ~EventPool() = default;
 
-        // === Event Pooling ===
-        
+        EventPool(const EventPool&) = delete;
+        EventPool& operator=(const EventPool&) = delete;
+
+        constexpr static size_t POOL_SIZE = 1024; //!< Pool size in events.
+
+        Event *BorrowEvent();
+        void ReturnEvent(Event *ev);
+
+    private:
+        boost::object_pool<Event> pool; //!< Memory pool.
 
     };
 

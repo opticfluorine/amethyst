@@ -85,7 +85,7 @@ public:
 
 protected:
 
-    System(EventLoop &eventLoop)
+    System()
     {
 
     }

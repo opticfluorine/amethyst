@@ -15,26 +15,22 @@
  * limitations under the License.
  */
 
-#ifndef __AMETHYSTCORE_EVENTLOOP_HPP__
-#define __AMETHYSTCORE_EVENTLOOP_HPP__
+#include "EventPool.hpp"
 
-namespace Amethyst
+using namespace Amethyst::Core;
+
+EventPool::EventPool() :
+    pool(POOL_SIZE)
 {
-namespace Core
-{
-
-    /**@brief Event loop that connects all Systems together with pub/sub message queues.
-     */
-    class EventLoop final
-    {
-    public:
-
-        // === Event Pooling ===
-        
-
-    };
 
 }
+
+Event *EventPool::BorrowEvent()
+{
+    return pool.malloc();
 }
 
-#endif
+void EventPool::ReturnEvent(Event *ev)
+{
+    pool.free(ev);
+}
